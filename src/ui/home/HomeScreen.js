@@ -9,9 +9,8 @@ const HomeScreen=()=> {
     const [productsList, setProductsList] = useState([])
 
     useEffect(()=> {
-      // getUsers()
-      getSuppliers()
-      getProducts()
+      getSuppliers().then(setSuppliersList)
+      getProducts().then(setProductsList)
       // getProductById(1)
     }, [])
 
@@ -19,9 +18,27 @@ const HomeScreen=()=> {
       return <View style={styles.header}></View>
     }
 
+    renderContent=()=>{
+      return <View style={styles.content}>
+        <FlatList 
+          style={styles.list}
+          data={suppliersList} 
+          renderItem={({item})=> <Text>{item.contactName}</Text>}
+          keyExtractor={item => item.id}
+          />
+        <FlatList 
+          style={styles.list}
+          data={productsList} 
+          renderItem={({item})=> <Text>{item.rawProductName}</Text>}
+          keyExtractor={item => item.id}
+          />
+      </View>
+    }
+
     return (
       <View style={styles.container}>
         {renderHeader()}
+        {renderContent()}
       </View>
     );
 }
@@ -29,12 +46,16 @@ const HomeScreen=()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
   header: {
     width: '100%',
     height: '10%',
-    backgroundColor: '#ecf0f1'
+    backgroundColor: '#F0F0F0'
+  },
+  content: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    alignItems: 'center'
   },
   paragraph: {
     marginTop: 8,
@@ -42,6 +63,9 @@ const styles = StyleSheet.create({
   logo: {
     width: 66,
     height: 58,
+  },
+  list: {
+    flex: 1
   },
 });
 
