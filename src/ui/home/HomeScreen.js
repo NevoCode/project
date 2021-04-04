@@ -1,38 +1,42 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, Button, StyleSheet, Image, FlatList } from 'react-native';
+import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
 import {getUsers, getSuppliers, getProducts, getProductById} from '../../data/serviceApi';
+import SuppliersPicker from '../components/SuppliersPicker';
+import ProductsList from '../products_list/ProductsList';
 
 const HomeScreen=()=> {
-    const [selectedSupplier, setSelectedSupplier] = useState({})
+    // const [selectedSupplier, setSelectedSupplier] = useState()
     const [suppliersList, setSuppliersList] = useState([])
     const [productsList, setProductsList] = useState([])
 
     useEffect(()=> {
       getSuppliers().then(setSuppliersList)
       getProducts().then(setProductsList)
-      // getProductById(1)
     }, [])
 
     renderHeader=()=>{
-      return <View style={styles.header}></View>
+      return <SuppliersPicker 
+                items={suppliersList}
+                onItemSelected={(supplierId)=>
+                  getProductById(supplierId).then(setProductsList)
+                }
+              />
     }
 
+
+    //TODO: Check productsById fucntionality
     renderContent=()=>{
       return <View style={styles.content}>
-        <FlatList 
-          style={styles.list}
-          data={suppliersList} 
-          renderItem={({item})=> <Text>{item.contactName}</Text>}
-          keyExtractor={item => item.id}
-          />
-        <FlatList 
-          style={styles.list}
-          data={productsList} 
-          renderItem={({item})=> <Text>{item.rawProductName}</Text>}
-          keyExtractor={item => item.id}
-          />
+        <ProductsList
+          data={productsList}
+          onProductSelected={onProductSelected}
+        />
       </View>
+    }
+
+    onProductSelected=(item)=>{
+      console.log("onProductSelected: " + item.rawProductName)
     }
 
     return (
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: '10%',
+    height: '20%',
     backgroundColor: '#F0F0F0'
   },
   content: {

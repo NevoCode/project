@@ -7,9 +7,9 @@ export const GET_SUPPLIERS = BASE_API + 'suppliers/GetSuppliers';
 export const GET_USERS = BASE_API + 'users/GetUsers';
 export const GET_USER_BY_ID=(id)=> BASE_API + 'users/GetUser/' + id;;
 
-
 //Products API
 export const GET_ALL_PRODUCTS = BASE_API + 'rawproducts/GetRawProducts';
-export const GET_PRODUCTS_BY_SUPPLIER_ID=(id)=> BASE_API + 'rawproducts/GetRawProduct/' + id;
+export const GET_PRODUCTS_BY_SUPPLIER_ID=(id)=> BASE_API + 'rawproducts/GetRawProductsBySupplier/' + id;
 
-
+//Orders API
+export const GET_ORDERS = BASE_API + 'orders/GetOrders';

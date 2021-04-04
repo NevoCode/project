@@ -1,8 +1,17 @@
 import { 
     GET_ALL_PRODUCTS, 
+    GET_ORDERS, 
     GET_PRODUCTS_BY_SUPPLIER_ID, 
     GET_SUPPLIERS, GET_USERS 
 } from "./serviceApiConstants";
+
+/**
+ * Get all users orders
+ * @returns @see baseFetch()
+ */
+ const getOrders=async()=> {
+    return baseFetch(GET_ORDERS)
+}
 
 /**
  * Get all users
@@ -40,15 +49,15 @@ async function getProductById(id) {
 /**
  * service api base fetch function
  * @param {String} url 
- * @returns Object json
- * @returns String Error
+ * @returns Success Object json
+ * @returns Error String 
  */
-async function baseFetch(url){
+ async function baseFetch(url){
     console.log("FETCH URL :" + url)
     try {
         let response = await fetch(url);
         let responseJson = await response.json();
-        console.log("FETCH Success: " + JSON.stringify(responseJson))
+        // console.log("FETCH Success: " + JSON.stringify(responseJson))
         return responseJson;
     } catch (error) {
         console.log("FETCH ERROR: " + error)
