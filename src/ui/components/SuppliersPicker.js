@@ -5,6 +5,10 @@ import React, {useState} from 'react';
 const SuppliersPicker =({items, onItemSelected})=> {
     const [selectedSupplier, setSelectedSupplier] = useState()
 
+    onValueChange=(value)=>{
+      setSelectedSupplier(value)
+      onItemSelected(value)
+    }
     return (
             <Picker
               mode="dropdown"
@@ -13,9 +17,7 @@ const SuppliersPicker =({items, onItemSelected})=> {
               style={{alignSelf: 'center' }}
               note={false}
               selectedValue={selectedSupplier}
-
-              //Todo: Handle onItemSelected with selectedSupplierId
-              onValueChange={setSelectedSupplier}
+              onValueChange={onValueChange}
             >
                 {items.map((item, index) => <Picker.Item label={item.contactName} value={item.supplierId}/>)}
             </Picker>

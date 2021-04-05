@@ -2,7 +2,8 @@ import {
     GET_ALL_PRODUCTS, 
     GET_ORDERS, 
     GET_PRODUCTS_BY_SUPPLIER_ID, 
-    GET_SUPPLIERS, GET_USERS 
+    GET_SUPPLIERS, 
+    GET_USERS 
 } from "./serviceApiConstants";
 
 /**
@@ -42,7 +43,7 @@ async function getProducts() {
  * @param {Int8Array} id 
  * @returns @see baseFetch()
  */
-async function getProductById(id) {
+async function getProductsBySupplierId(id) {
     return baseFetch(GET_PRODUCTS_BY_SUPPLIER_ID(id))
 }
 
@@ -66,4 +67,4 @@ async function getProductById(id) {
     }
 }
 
-export {getUsers, getSuppliers, getProducts, getProductById}
+export {getUsers, getSuppliers, getProducts, getProductsBySupplierId}

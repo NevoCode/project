@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
-import {getUsers, getSuppliers, getProducts, getProductById} from '../../data/serviceApi';
+import {getUsers, getSuppliers, getProducts, getProductsBySupplierId} from '../../data/serviceApi';
 import SuppliersPicker from '../components/SuppliersPicker';
 import ProductsList from '../products_list/ProductsList';
 
@@ -18,14 +18,13 @@ const HomeScreen=()=> {
     renderHeader=()=>{
       return <SuppliersPicker 
                 items={suppliersList}
-                onItemSelected={(supplierId)=>
-                  getProductById(supplierId).then(setProductsList)
+                onItemSelected={(supplierId)=>{
+                  getProductsBySupplierId(supplierId).then(setProductsList)
+                }
                 }
               />
     }
 
-
-    //TODO: Check productsById fucntionality
     renderContent=()=>{
       return <View style={styles.content}>
         <ProductsList
