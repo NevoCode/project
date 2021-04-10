@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
-import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item} from 'native-base'; 
+import {Text} from 'react-native'
+import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item, Button} from 'native-base'; 
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export default ProductListItem=(item, onItemSelected, onQuantityChanged)=>{
-    const [quantity, setQuantity] = useState(0)
+export default ProductListItem=(item, onItemSelected, onQuantityChanged, getItemCartQuantity)=>{
     const {rawProductPicture, rawProductName, rawProductPrice} = item
-
-    increment=()=>{
-        setQuantity(quantity + 1)
-        onQuantityChanged(item, quantity)
-    }
-
-    decrement=()=>{
-        setQuantity(quantity - 1)
-        onQuantityChanged(item, quantity)
-    }
+    const quantity = getItemCartQuantity(rawProductName)
 
         return(
-             <Card key={item.key}>
+             <Card key={item.key} style={{alignItems: "center"}}>
                  <CardItem button onPress={()=> onItemSelected(item)}>
                      <Left>
                      <Thumbnail 
                          source={{uri: rawProductPicture}}
                          style={{width:80,height:60,borderRadius:10}}/>
                      </Left>
-                     <Right>
-                     <View style={{alignItems: 'flex-start', top:-5}}>
-                             <Title style={{color: 'red'}}>{rawProductName}</Title>
-                             <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle>
+                     <Right style={{width: '80%'}}>
+                     <View style={{alignItems: 'flex-start'}}>
+                             <Text style={{fontSize: 20}}>{rawProductName}</Text>
+                             {/* <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle> */}
                          </View>
                      </Right>
-                     <Icon key={"increment"}onPress={()=> increment()}/>
-                     <Text>{quantity}</Text>
-                     <Icon key={"increment"}onPress={()=> decrement()}/>
+                 </CardItem>
+                 <CardItem style={{alignSelf: 'flex-end'}}>
+
+                    <Button transparent onPress={()=> onQuantityChanged(rawProductName, quantity + 1)}>
+                        <Icon type={"FontAwesome"} name='chevron-circle-up'  />
+                    </Button>
+
+                    <Text>{quantity}</Text>
+
+                        <Button  transparent onPress={()=> onQuantityChanged(rawProductName, quantity - 1)}>
+                            <Icon type={"FontAwesome"} name='chevron-circle-down' />
+                        </Button>
+
                  </CardItem>
              </Card>
         )
