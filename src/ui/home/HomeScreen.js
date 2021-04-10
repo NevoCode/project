@@ -40,7 +40,7 @@ const HomeScreen=()=> {
 
     return (
       <View style={styles.container}>
-        {renderHeader()}
+        {/* {renderHeader()} */}
         {renderContent()}
       </View>
     );

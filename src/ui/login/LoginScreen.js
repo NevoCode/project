@@ -17,8 +17,8 @@ import { loginWithEmailAndPassword } from '../../data/userValidator';
 
 export default LoginScreen=()=> {
     const navigation = useNavigation()
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("admin@gmail.com")
+    const [password, setPassword] = useState("123123")
 
     const createErrorAlert = () =>
     Alert.alert(

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import ProductItem from "./ProductItem"
 import { FlatList, StyleSheet } from 'react-native';
 

@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item} from 'native-base'; 
 
-export default ProductListItem=(item, onItemSelected)=>{
-const {rawProductPicture, rawProductName, rawProductPrice} = item
+export default ProductListItem=(item, onItemSelected, onQuantityChanged)=>{
+    const [quantity, setQuantity] = useState(0)
+    const {rawProductPicture, rawProductName, rawProductPrice} = item
+
+    increment=()=>{
+        setQuantity(quantity + 1)
+        onQuantityChanged(item, quantity)
+    }
+
+    decrement=()=>{
+        setQuantity(quantity - 1)
+        onQuantityChanged(item, quantity)
+    }
+
         return(
-             <Card>
+             <Card key={item.key}>
                  <CardItem button onPress={()=> onItemSelected(item)}>
                      <Left>
                      <Thumbnail 
@@ -13,10 +25,13 @@ const {rawProductPicture, rawProductName, rawProductPrice} = item
                      </Left>
                      <Right>
                      <View style={{alignItems: 'flex-start', top:-5}}>
-                             <Title style= {{color: 'black' }}>{rawProductName}</Title>
+                             <Title style={{color: 'red'}}>{rawProductName}</Title>
                              <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle>
                          </View>
                      </Right>
+                     <Icon key={"increment"}onPress={()=> increment()}/>
+                     <Text>{quantity}</Text>
+                     <Icon key={"increment"}onPress={()=> decrement()}/>
                  </CardItem>
              </Card>
         )
