@@ -22,6 +22,7 @@ export default LoginScreen = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [hidePassword, setHidePassword] = useState(true)
+  const [isSelected, setIsSelected] = useState(false); 
 
   const createErrorAlert = () =>
     Alert.alert(
