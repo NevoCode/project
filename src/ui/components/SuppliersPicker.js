@@ -30,7 +30,6 @@ const SuppliersPicker =({items, onItemSelected, style = {}})=> {
       )
     }
 
-    //TODO: check Picker.Item justifyContet: 'center'
     renderAndroidPicker=()=> {
       return (
           <Picker

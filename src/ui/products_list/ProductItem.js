@@ -3,10 +3,23 @@ import {Text} from 'react-native'
 import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item, Button} from 'native-base'; 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export default ProductListItem=(item, onItemSelected, onQuantityChanged, getItemCartQuantity)=>{
+export default ProductListItem=(item, onItemSelected, onQuantityChanged, getItemCartQuantity = null)=>{
     const {rawProductPicture, rawProductName, rawProductPrice} = item
-    const quantity = getItemCartQuantity(rawProductName)
 
+    quantityCard=()=>{
+        const quantity = getItemCartQuantity(rawProductName)
+        return (
+        <CardItem style={{alignSelf: 'flex-end'}}>
+            <Button transparent onPress={()=> onQuantityChanged(rawProductName, quantity + 1)}>
+                <Icon type={"FontAwesome"} name='chevron-circle-up'  />
+            </Button>
+            <Text>{quantity}</Text>
+            <Button  transparent onPress={()=> onQuantityChanged(rawProductName, quantity - 1)}>
+                <Icon type={"FontAwesome"} name='chevron-circle-down' />
+            </Button>
+     </CardItem>
+        )
+    }
         return(
              <Card key={item.key} style={{alignItems: "center"}}>
                  <CardItem button onPress={()=> onItemSelected(item)}>
@@ -22,19 +35,7 @@ export default ProductListItem=(item, onItemSelected, onQuantityChanged, getItem
                          </View>
                      </Right>
                  </CardItem>
-                 <CardItem style={{alignSelf: 'flex-end'}}>
-
-                    <Button transparent onPress={()=> onQuantityChanged(rawProductName, quantity + 1)}>
-                        <Icon type={"FontAwesome"} name='chevron-circle-up'  />
-                    </Button>
-
-                    <Text>{quantity}</Text>
-
-                        <Button  transparent onPress={()=> onQuantityChanged(rawProductName, quantity - 1)}>
-                            <Icon type={"FontAwesome"} name='chevron-circle-down' />
-                        </Button>
-
-                 </CardItem>
+                {getItemCartQuantity !== null && quantityCard()}
              </Card>
         )
     }
