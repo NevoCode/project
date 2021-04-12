@@ -1,31 +1,32 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { ShoppingCartContext } from '../../data/ShoppingCartContext';
 import ProductsList from '../products_list/ProductsList'
+import ShoppingItem from '../products_list/ShoppingItem';
 
-const ShoppingCart=()=>{
-    const [cartList, setCartList] = useState([])
+const ShoppingCart = () => {
+    const shoppingCart = useContext(ShoppingCartContext);
 
-    incrementItemQuantity=()=>{
-
-    }
-
-    dectrementItemQuantity=()=>{
+    incrementItemQuantity = () => {
 
     }
 
-    getItemCartQuantity=()=>{
+    dectrementItemQuantity = () => {
 
     }
 
-    updateCartItem=()=>{
+    getItemCartQuantity = () => {
 
     }
 
-    return(
+    updateCartItem = () => {
+
+    }
+
+    return (
         <ProductsList
-            data={cartList}
-            getItemCartQuantity={getItemCartQuantity}
-            onQuantityChanged={updateCartItem}
-      />
+            data={shoppingCart.list}
+            renderItem={({item})=> ShoppingItem(item, onProductSelected, onQuantityChanged, getItemCartQuantity)}
+        />
     )
 }
 

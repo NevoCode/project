@@ -5,6 +5,7 @@ import { ShoppingCartContext } from '../../data/ShoppingCartContext';
 import { getUsers, getSuppliers, getProducts, getProductsBySupplierId } from '../../data/serviceApi';
 import SuppliersPicker from '../components/SuppliersPicker';
 import ProductsList from '../products_list/ProductsList';
+import ProductItem from '../products_list/ProductItem';
 
 const HomeScreen = () => {
   const shoppingCart = useContext(ShoppingCartContext);
@@ -15,10 +16,7 @@ const HomeScreen = () => {
 
   useEffect(() => { //Constructor
     getSuppliers().then(setSuppliersList)
-    getProducts().then((products)=> {
-      setProductsList(products)
-      shoppingCart.updateList(products)
-    })
+    getProducts().then(setProductsList)
   }, [])
 
   updateCartItem = (itemName, quantity) => {
@@ -55,8 +53,7 @@ const HomeScreen = () => {
       <View style={styles.content}>
         <ProductsList
           data={productsList}
-          onProductSeledscted={onProductSelected}
-          onQuantityChanged={updateCartItem}
+          renderItem={({item})=> ProductItem(item, onProductSelected, onQuantityChanged, getItemCartQuantity)}
         />
       </View>
     )

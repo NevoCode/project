@@ -13,10 +13,11 @@ class ShoppingCartContextProvider extends Component {
   }
 
   addProduct=(product)=>{
-    newList = this.state.list.copyWithin;
+    console.log("addProduct: " + product)
     //TODO: check if product not exists
-    newList.push(product)
-    this.setState({list: newList})
+    this.setState({list: [...this.state.list, product]})
+    console.log("updateList: " + JSON.stringify(this.state.list))
+
   }
 
   removeProduct=()=>{

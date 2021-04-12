@@ -19,8 +19,8 @@ export default LoginScreen = () => {
   const STORAGE_IS_USER_CONNECTED = "isConnected"
 
   //class states
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("admin@gmail.com")
+  const [password, setPassword] = useState("123123")
   const [hidePassword, setHidePassword] = useState(true)
   const [isSelected, setIsSelected] = useState(false); 
 

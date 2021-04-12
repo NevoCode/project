@@ -3,10 +3,11 @@ import {Text} from 'react-native'
 import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item, Button} from 'native-base'; 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export default ProductListItem=(item, onProductSelected, onQuantityChanged)=>{
+export default ProductListItem=(item, onProductSelected, onQuantityChanged, getItemCartQuantity = null)=>{
     const {rawProductPicture, rawProductName, rawProductPrice} = item
 
     quantityCard=()=>{
+        const quantity = getItemCartQuantity(rawProductName)
         return (
         <CardItem style={{alignSelf: 'flex-end'}}>
             <Button transparent onPress={()=> onQuantityChanged(rawProductName, quantity + 1)}>
@@ -30,10 +31,11 @@ export default ProductListItem=(item, onProductSelected, onQuantityChanged)=>{
                      <Right style={{width: '80%'}}>
                      <View style={{alignItems: 'flex-start'}}>
                              <Text style={{fontSize: 20}}>{rawProductName}</Text>
-                             <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle>
+                             {/* <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle> */}
                          </View>
                      </Right>
                  </CardItem>
+                {getItemCartQuantity !== null && quantityCard()}
              </Card>
         )
     }
