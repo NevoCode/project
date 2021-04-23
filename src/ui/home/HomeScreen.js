@@ -25,16 +25,6 @@ const HomeScreen = () => {
     console.log("cart: " + JSON.stringify(cart))
   }
 
-  getItemCartQuantity = (itemName) => {
-    // for (item in cart){
-    //   console.log("item: " + JSON.stringify(item))
-    //     if (item.name === itemName){
-    //         return item.quantity
-    //     }
-    // }
-    return 0
-  }
-
   renderHeader = () => {
     return (
       <SuppliersPicker
@@ -53,7 +43,7 @@ const HomeScreen = () => {
       <View style={styles.content}>
         <ProductsList
           data={productsList}
-          renderItem={({item})=> ProductItem(item, onProductSelected, onQuantityChanged, getItemCartQuantity)}
+          renderItem={({item})=> ProductItem(item, onProductSelected, onQuantityChanged, shoppingCart.isProductExists(item))}
         />
       </View>
     )

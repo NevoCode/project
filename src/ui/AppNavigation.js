@@ -5,12 +5,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from './home/HomeScreen';
 import LoginScreen from './login/LoginScreen';
-import ShoppingCart from './shoppingCart/ShoppingCart';
+import ShoppingCartScreen from './shoppingCart/ShoppingCartScreen';
 import ShoppingCartContextProvider from '../data/ShoppingCartContext';
 
 const LOGIN_SCREEN = "התחברות"
 const HOME_SCREEN = "Home"
-const SHOPPING_CART = "ShoppingCart"
+const SHOPPING_CART = "Shopping Cart"
 
 const HOME_TABS = "רשימת מוצרים"
 
@@ -36,7 +36,7 @@ const HomeTabs = () => {
     <ShoppingCartContextProvider>
       <Tabs.Navigator>
         <Tabs.Screen name={HOME_SCREEN} component={HomeScreen} />
-        <Tabs.Screen name={SHOPPING_CART} component={ShoppingCart} />
+        <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} />
       </Tabs.Navigator>
     </ShoppingCartContextProvider>
   )

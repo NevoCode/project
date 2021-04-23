@@ -3,9 +3,9 @@ import {Text} from 'react-native'
 import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item, Button} from 'native-base'; 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-export default ProductListItem=(item, onProductSelected, onQuantityChanged)=>{
+export default ProductListItem=(item, onProductSelected, onQuantityChanged, isInCart = false)=>{
     const {rawProductPicture, rawProductName, rawProductPrice} = item
-
+    console.log("ProductListItem: " + isInCart)
     quantityCard=()=>{
         return (
         <CardItem style={{alignSelf: 'flex-end'}}>
@@ -21,7 +21,7 @@ export default ProductListItem=(item, onProductSelected, onQuantityChanged)=>{
     }
         return(
              <Card key={item.key} style={{alignItems: "center"}}>
-                 <CardItem button onPress={()=> onProductSelected(item)}>
+                 <CardItem button style={{backgroundColor: isInCart ? "#00FF00" : Colors.white}} onPress={()=> onProductSelected(item)}>
                      <Left>
                      <Thumbnail 
                          source={{uri: rawProductPicture}}

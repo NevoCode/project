@@ -1,41 +1,51 @@
-import React, { useState } from 'react';
-import {Text} from 'react-native'
-import {View,Title,Card,CardItem,Left,Right,Thumbnail,Subtitle, Icon, Item, Button} from 'native-base'; 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import React, { Component, useContext, useState } from 'react';
+import { Text } from 'react-native'
+import { View, Title, Card, CardItem, Left, Right, Thumbnail, Subtitle, Icon, Item, Button } from 'native-base';
 
-export default ProductListItem=(item, onProductSelected, onQuantityChanged, getItemCartQuantity = null)=>{
-    const {rawProductPicture, rawProductName, rawProductPrice} = item
+class ShoppingItem extends Component{
+    constructor(props){ //props = {index, item ,onQuantityChaged}
+        super(props)
+        console.log("index: " + props.index)
+    }
 
-    quantityCard=()=>{
-        const quantity = getItemCartQuantity(rawProductName)
+    updateQuantity(newQuantity){
+        if (newQuantity < 0) return
+        this.props.onQuantityChanged(this.props.index, newQuantity)
+    }
+
+    
+    render(){
+        const { rawProductPicture, rawProductName, rawProductPrice, key, quantity} = this.props.item
+        const price = quantity * this.props.item.rawProductPrice
         return (
-        <CardItem style={{alignSelf: 'flex-end'}}>
-            <Button transparent onPress={()=> onQuantityChanged(rawProductName, quantity + 1)}>
-                <Icon type={"FontAwesome"} name='chevron-circle-up'  />
-            </Button>
-            <Text>{quantity}</Text>
-            <Button  transparent onPress={()=> onQuantityChanged(rawProductName, quantity - 1)}>
-                <Icon type={"FontAwesome"} name='chevron-circle-down' />
-            </Button>
-     </CardItem>
+            <Card key={key}>
+                <CardItem>
+                    <Left>
+                        <Thumbnail
+                            source={{ uri: rawProductPicture }}
+                            style={{ width: 80, height: 60, borderRadius: 10 }} />
+                    </Left>
+                    <Right style={{ width: '80%' }}>
+                        <View style={{ alignItems: 'flex-start' }}>
+                            <Text style={{ fontSize: 20 }}>{rawProductName}</Text>
+                        </View>
+                    </Right>
+                </CardItem>
+                <CardItem style={{ alignSelf: 'flex-end' }}>
+                    <Left>
+                        <Text style={{ fontSize: 20 }}> {price} ₪</Text>
+                    </Left>
+                    <Button transparent onPress={() => this.updateQuantity(quantity + 1)}>
+                        <Icon type={"FontAwesome"} name='chevron-circle-up' />
+                    </Button>
+                    <Text>{quantity}</Text>
+                    <Button transparent onPress={() => this.updateQuantity(quantity - 1)}>
+                        <Icon type={"FontAwesome"} name='chevron-circle-down' />
+                    </Button>
+                </CardItem>
+            </Card>
         )
     }
-        return(
-             <Card key={item.key} style={{alignItems: "center"}}>
-                 <CardItem button onPress={()=> onProductSelected(item)}>
-                     <Left>
-                     <Thumbnail 
-                         source={{uri: rawProductPicture}}
-                         style={{width:80,height:60,borderRadius:10}}/>
-                     </Left>
-                     <Right style={{width: '80%'}}>
-                     <View style={{alignItems: 'flex-start'}}>
-                             <Text style={{fontSize: 20}}>{rawProductName}</Text>
-                             {/* <Subtitle style= {{color: 'black' }}>{rawProductPrice}</Subtitle> */}
-                         </View>
-                     </Right>
-                 </CardItem>
-                {getItemCartQuantity !== null && quantityCard()}
-             </Card>
-        )
-    }
+}
+
+export default ShoppingItem
