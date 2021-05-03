@@ -1,4 +1,6 @@
+import { AddOrderRequestModel } from "./addOrderRequestModel";
 import { 
+    ADD_ORDER,
     GET_ALL_PRODUCTS, 
     GET_ORDERS, 
     GET_PRODUCTS_BY_SUPPLIER_ID, 
@@ -48,15 +50,29 @@ async function getProductsBySupplierId(id) {
 }
 
 /**
+ * add order to server
+ * @param {AddOrderRequestModel} request 
+ * @returns @see baseFetch()
+ */
+ async function addOrder(request) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request)
+    };
+    return baseFetch(ADD_ORDER, requestOptions)
+}
+
+/**
  * service api base fetch function
  * @param {String} url 
  * @returns Success Object json
  * @returns Error String 
  */
- async function baseFetch(url){
+ async function baseFetch(url, options = ""){
     console.log("FETCH URL :" + url)
     try {
-        let response = await fetch(url);
+        let response = await fetch(url, options);
         let responseJson = await response.json();
         // console.log("FETCH Success: " + JSON.stringify(responseJson))
         return responseJson;
@@ -67,4 +83,4 @@ async function getProductsBySupplierId(id) {
     }
 }
 
-export {getUsers, getSuppliers, getProducts, getProductsBySupplierId}
+export {getUsers, getSuppliers, getProducts, getProductsBySupplierId, addOrder}

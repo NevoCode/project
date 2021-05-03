@@ -13,3 +13,4 @@ export const GET_PRODUCTS_BY_SUPPLIER_ID=(id)=> BASE_API + 'rawproducts/GetRawPr
 
 //Orders API
 export const GET_ORDERS = BASE_API + 'orders/GetOrders';
+export const ADD_ORDER = BASE_API + 'orders/AddOrder';

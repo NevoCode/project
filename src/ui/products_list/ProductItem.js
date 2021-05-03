@@ -5,7 +5,6 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default ProductListItem=(item, onProductSelected, onQuantityChanged, isInCart = false)=>{
     const {rawProductPicture, rawProductName, rawProductPrice} = item
-    console.log("ProductListItem: " + isInCart)
     quantityCard=()=>{
         return (
         <CardItem style={{alignSelf: 'flex-end'}}>

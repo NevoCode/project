@@ -25,7 +25,7 @@ const SuppliersPicker =({items, onItemSelected, style = {}})=> {
           selectedValue={selectedSupplier}
           onValueChange={onValueChange}
         >
-            {items.map((item, index) => <Picker.Item label={item.contactName} value={item.supplierId}/>)}
+            {items.map((item, index) => <Picker.Item label={item.contactName.trim()} value={item.supplierId}/>)}
         </Picker>
       )
     }

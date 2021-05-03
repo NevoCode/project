@@ -8,9 +8,9 @@ class ShoppingCartContextProvider extends Component {
   };
 
   addProduct=(product)=>{
-    console.log("addProduct: ")
-    //TODO: check if product not exists
+    console.log("addProduct: " + product)
     const currentList = this.state.list.copyWithin()
+    //check if product not exists
     if (!this.isProductExists(product)){
       product.quantity = 1
       currentList.push(product)
@@ -54,6 +54,8 @@ class ShoppingCartContextProvider extends Component {
     return amount
   }
 
+  isShoppingCartEmpty=()=> this.state.list.length == 0
+
   render() {
     return (
       <ShoppingCartContext.Provider
@@ -63,7 +65,8 @@ class ShoppingCartContextProvider extends Component {
           removeProduct: this.removeProduct,
           updateItemQuantity: this.updateItemQuantity,
           isProductExists: this.isProductExists,
-          getTotalCartPrice: this.getTotalCartPrice
+          getTotalCartPrice: this.getTotalCartPrice,
+          isShoppingCartEmpty: this.isShoppingCartEmpty,
         }}>
         {this.props.children}
       </ShoppingCartContext.Provider>
