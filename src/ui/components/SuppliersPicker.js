@@ -1,4 +1,4 @@
-import { Picker } from 'native-base';
+import { Icon, Picker } from 'native-base';
 import React, {useState} from 'react';
 import { Platform } from 'react-native';
 
@@ -24,6 +24,8 @@ const SuppliersPicker =({items, onItemSelected, style = {}})=> {
           note={false}
           selectedValue={selectedSupplier}
           onValueChange={onValueChange}
+          iosIcon={<Icon name="arrow-down" />}
+          icon={<Icon name="arrow-down" />}
         >
             {items.map((item, index) => <Picker.Item label={item.contactName.trim()} value={item.supplierId}/>)}
         </Picker>

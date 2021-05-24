@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   Container,
@@ -8,6 +8,7 @@ import {
   Input,
   Label,
   Icon,
+  Switch,
 } from 'native-base';
 import { Alert, StyleSheet, Button, View, Image, CheckBox } from 'react-native';
 import { loginWithEmailAndPassword } from '../../data/userValidator';
@@ -23,6 +24,13 @@ export default LoginScreen = () => {
   const [password, setPassword] = useState("123123")
   const [hidePassword, setHidePassword] = useState(true)
   const [isSelected, setIsSelected] = useState(false); 
+  const [rememberMe, setRememberMe] = useState(true); 
+
+  // useEffect(async()=>{
+  //   const username = await this.getRememberedUser();
+  //     console.log("XXX " + username)
+
+  // })
 
   const createErrorAlert = () =>
     Alert.alert(
@@ -42,19 +50,10 @@ export default LoginScreen = () => {
       ]
     );
 
-  const toggleRememberMe = (value) => {
-      this.setState({ rememberMe: value })
-      if (value === true) {
-        //user wants to be remembered.
-        this.rememberUser();
-      } else {
-        this.forgetUser();
-      }
-  }
-
   rememberUser = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_IS_USER_CONNECTED, this.state.username);
+      console.log("XXXX -> remember " + this.state.username)
     } catch (error) {
       // Error saving data
     }
@@ -80,19 +79,14 @@ export default LoginScreen = () => {
     }
   };
 
-  componentDidMount = async () => {
-    const username = await this.getRememberedUser();
-    this.setState({
-      username: username || "",
-      rememberMe: username ? true : false
-    })
-  };
-
   onLoginPressed = async () => {
     const loginSuccess = await loginWithEmailAndPassword(email, password)
     console.log("loginSuccess: " + loginSuccess);
     if (loginSuccess) {
-      navigation.navigate(HOME_TABS)
+      if (rememberMe){
+        rememberUser()
+      }
+      navigation.navigate(HOME_TABS, {name: email})
     } else {
       createErrorAlert()
     }
@@ -115,17 +109,14 @@ export default LoginScreen = () => {
         <View style={styles.button}>
           <Button onPress={onLoginPressed} title="התחבר למערכת" />
         </View>
-
       </Form>
       <View>
-        {/* <Switch
-            value={this.state.rememberMe}
-            onValueChange={(value) => this.toggleRememberMe(value)}
-            /> */}
-
+        <Switch
+            value={rememberMe}
+            onValueChange={setRememberMe}
+            />
         <View style={addItemStyles.wrapper}>
           <View>
-
             <View style={{ flexDirection: "row" }}>
               <View style={{ flex: 0 }}>
                 <Text style={{ justifyContent: 'flex-start', }} >זכור אותי</Text>

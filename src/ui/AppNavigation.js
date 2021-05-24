@@ -6,26 +6,29 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './home/HomeScreen';
 import LoginScreen from './login/LoginScreen';
 import ShoppingCartScreen from './shoppingCart/ShoppingCartScreen';
+import DashboardScreen from './dashboard/DashboardScreen';
 import ShoppingCartContextProvider from '../data/ShoppingCartContext';
 
 const LOGIN_SCREEN = "התחברות"
 const HOME_SCREEN = "Home"
 const SHOPPING_CART = "Shopping Cart"
+const DASHBOARD = "Dashboard"
 
-const HOME_TABS = "רשימת מוצרים"
+const HOME_TABS = "tabs"  //TODO: pass user name
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const AppNavigation = () => {
   // connected = AsyncStorage.getItem("isConnected", false)
+  // const userName = AsyncStorage.getItem("userName", "")
   const [isConnected, setIsConnected] = useState(false)
 
   return (
     <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name={LOGIN_SCREEN} component={LoginScreen} />
-          <Stack.Screen name={HOME_TABS} component={HomeTabs} />
+          <Stack.Screen name={HOME_TABS} component={HomeTabs} options={({ route }) => ({ title: 'שלום ' + route.params.name })} />
         </Stack.Navigator>
     </NavigationContainer>
   );
@@ -37,6 +40,7 @@ const HomeTabs = () => {
       <Tabs.Navigator>
         <Tabs.Screen name={HOME_SCREEN} component={HomeScreen} />
         <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} />
+        <Tabs.Screen name={DASHBOARD} component={DashboardScreen} />
       </Tabs.Navigator>
     </ShoppingCartContextProvider>
   )

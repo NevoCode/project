@@ -29,15 +29,22 @@ const ShoppingCartScreen = () => {
 
         //send api request
         const orderResponse = await addOrder(mockRequest)
-        console.log(JSON.stringify(orderResponse))
-        createOrderResponseAlert(orderResponse.Message, orderResponse.IsSuccessStatusCode)
+        console.log("XXX -> " + JSON.stringify(orderResponse))
+
+          if (typeof orderResponse == "string"){
+            createOrderResponseAlert(orderResponse)
+          } else {
+            const {_errorMessage, _propertyName} = orderResponse.EntityValidationErrors[0]._validationErrors[0]
+            createOrderResponseAlert(_propertyName + '\n' + _errorMessage)
+          }
+
         setIsOrderInProgress(false)
     }
 
-    const createOrderResponseAlert = (message, success = false) =>
+    const createOrderResponseAlert = (message) =>
     Alert.alert(
-      "סטטוס הזמנה: " + (success ? "הזמנה בוצעה" : "הזמנה נכשלה"),
-      message,
+      "סטטוס הזמנה",
+       message,
       [
         { text: "OK", onPress: () => console.log("OK Pressed") }
       ]
