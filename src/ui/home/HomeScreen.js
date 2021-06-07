@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    width: '100%',
+    width: 250,
     minHeight: '10%',
     maxHeight: '10%',
-    backgroundColor: '#F0F0F0'
+    alignSelf: 'flex-end'
   },
   content: {
     backgroundColor: Colors.white,
