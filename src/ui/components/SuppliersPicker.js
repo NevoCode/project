@@ -2,8 +2,8 @@ import { Icon, Picker } from 'native-base';
 import React, {useState} from 'react';
 import { Platform } from 'react-native';
 
-const SuppliersPicker =({items, onItemSelected, style = {}})=> {
-    const [selectedSupplier, setSelectedSupplier] = useState()
+const SuppliersPicker =({defultValue, renderItems, onItemSelected, style = {}})=> {
+    const [selectedSupplier, setSelectedSupplier] = useState(defultValue)
 
     const isIos=()=>{
       return Platform.OS === 'ios'
@@ -27,7 +27,7 @@ const SuppliersPicker =({items, onItemSelected, style = {}})=> {
           iosIcon={<Icon name="arrow-down" />}
           icon={<Icon name="arrow-down" />}
         >
-            {items.map((item, index) => <Picker.Item label={item.contactName.trim()} value={item.supplierId}/>)}
+            {renderItems}
         </Picker>
       )
     }
@@ -36,11 +36,12 @@ const SuppliersPicker =({items, onItemSelected, style = {}})=> {
       return (
           <Picker
             mode="dropdown"
+            placeholder="Select Supplier"
             style={style}
             selectedValue={selectedSupplier}
             onValueChange={onValueChange}
         >
-            {items.map((item, index) => <Picker.Item key={index} label={item.contactName} value={item.supplierId}/>)}
+            {renderItems}
         </Picker>
       )
     }

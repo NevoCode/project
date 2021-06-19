@@ -15,7 +15,7 @@ class ShoppingItem extends Component{
 
     
     render(){
-        const { rawProductPicture, rawProductName, rawProductPrice, key, quantity} = this.props.item
+        const { rawProductPicture, rawProductName, rawProductPrice, key, quantity, recommendedAmout = 20} = this.props.item
         const price = quantity * this.props.item.rawProductPrice
         return (
             <Card key={key}>
@@ -34,6 +34,9 @@ class ShoppingItem extends Component{
                 <CardItem style={{ alignSelf: 'flex-end' }}>
                     <Left>
                         <Text style={{ fontSize: 20 }}> {price} ₪</Text>
+                    </Left>
+                    <Left style={{padding: 5, borderColor: recommendedAmout === quantity ? 'green' : 'brown', borderWidth: 2, borderRadius: 20, justifyContent: 'center'}}>
+                        <Text onPress={()=> this.updateQuantity(recommendedAmout)} style={{ fontSize: 15, textAlign: 'center' }}>{'כמות מומלצת\n'}{recommendedAmout}</Text>
                     </Left>
                     <Button transparent onPress={() => this.updateQuantity(quantity + 1)}>
                         <Icon type={"FontAwesome"} name='chevron-circle-up' />

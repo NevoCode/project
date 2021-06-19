@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './home/HomeScreen';
 import LoginScreen from './login/LoginScreen';
@@ -37,7 +38,30 @@ const AppNavigation = () => {
 const HomeTabs = () => {
   return (
     <ShoppingCartContextProvider>
-      <Tabs.Navigator>
+      <Tabs.Navigator
+      screenOptions={({route})=> ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === HOME_SCREEN) {
+            iconName = focused
+              ? 'list-circle'
+              : 'list-circle-outline';
+          } else if (route.name === SHOPPING_CART) {
+            iconName = focused ? 'cart' : 'cart-outline';
+          } else if (route.name === DASHBOARD){
+            iconName = focused ? 'calculator-outline' : 'calculator';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}
+    >
         <Tabs.Screen name={HOME_SCREEN} component={HomeScreen} />
         <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} />
         <Tabs.Screen name={DASHBOARD} component={DashboardScreen} />

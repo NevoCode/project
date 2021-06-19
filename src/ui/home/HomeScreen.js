@@ -2,39 +2,65 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
 import { ShoppingCartContext } from '../../data/ShoppingCartContext';
-import { getUsers, getSuppliers, getProducts, getProductsBySupplierId } from '../../data/serviceApi';
+import { getUsers, getSuppliers, getProducts, getProductsBySupplierId, getBranches } from '../../data/serviceApi';
 import SuppliersPicker from '../components/SuppliersPicker';
 import ProductsList from '../products_list/ProductsList';
 import ProductItem from '../products_list/ProductItem';
+import { Container, Picker, Switch } from 'native-base';
 
 const HomeScreen = () => {
   const shoppingCart = useContext(ShoppingCartContext);
 
   const [suppliersList, setSuppliersList] = useState([])
   const [productsList, setProductsList] = useState([])
-  const [cart, setCart] = useState([]) //[{name, quantity}]
+  const [branchesList, setBranchesList] = useState([])
+  const [isBranchOrderType, setOrderTypeSwitch] = useState(false)
+  const [selectedSupplierId, setSelectedSupplierId] = useState(0)
 
   useEffect(() => { //Constructor
-    getSuppliers().then(setSuppliersList)
-    getProducts().then(setProductsList)
+    getSuppliers().then((sList) => {
+      setSuppliersList(sList)
+      getProductsBySupplierId(sList[selectedSupplierId].supplierId).then(setProductsList)
+    })
+    getBranches().then(setBranchesList)
   }, [])
-
-  updateCartItem = (itemName, quantity) => {
-    const newList = [{ name: itemName, quantity: quantity }]
-    setCart([...cart, ...newList])
-    console.log("cart: " + JSON.stringify(cart))
-  }
 
   renderHeader = () => {
     return (
-      <SuppliersPicker
-        style={styles.header}
-        items={suppliersList}
-        onItemSelected={(supplierId) => {
-          getProductsBySupplierId(supplierId).then(setProductsList)
-        }
-        }
-      />
+      <View style={styles.headerContainer}>
+        <SuppliersPicker
+          style={styles.header}
+          defultValue={selectedSupplierId}
+          renderItems={ 
+            isBranchOrderType
+            ? branchesList.map((item, index) => <Picker.Item key={index} label={item.branchName} value={item.branchId}/>) 
+            : suppliersList.map((item, index) => <Picker.Item key={index} label={item.contactName} value={item.supplierId}/>)
+           }
+          onItemSelected={(supplierId) => {
+            if (!isBranchOrderType){
+              setSelectedSupplierId(supplierId)
+              getProductsBySupplierId(supplierId).then(setProductsList)
+            }
+          }
+          }
+        />
+        <Text style={{fontSize: 16, color: isBranchOrderType ? "green" : "purple"}}>{isBranchOrderType ? "סניפים" : "ספקים"}</Text>
+        { <Switch
+          trackColor={{ false: '#767577', true: '#81b0ff' }}
+          thumbColor={'#f4f3f4'}
+          onValueChange={(newValue)=> {
+            setOrderTypeSwitch(newValue)
+            console.log("This is it: " + newValue)
+            if (newValue){
+              getProducts().then(setProductsList)
+            } else {
+              getProductsBySupplierId(selectedSupplierId)
+            }
+          }}
+          value={isBranchOrderType}
+          
+        /> }
+      </View>
     )
   }
 
@@ -58,7 +84,6 @@ const HomeScreen = () => {
     console.log("onQuantityChanged: " + item.rawProductName + " --> " + quantity)
   }
 
-
   //TODO: handle Header (Picker) Height
   return (
     <View style={styles.container}>
@@ -72,11 +97,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  headerContainer: {
+    height: '10%',
+    flexDirection: 'row-reverse',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20
+  },
   header: {
-    width: 250,
-    minHeight: '10%',
-    maxHeight: '10%',
-    alignSelf: 'flex-end'
+    height: '100%',
+    color: 'black'
   },
   content: {
     backgroundColor: Colors.white,

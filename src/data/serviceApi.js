@@ -2,6 +2,7 @@ import { AddOrderRequestModel } from "./addOrderRequestModel";
 import { 
     ADD_ORDER,
     GET_ALL_PRODUCTS, 
+    GET_BRANCHES, 
     GET_ORDERS, 
     GET_PRODUCTS_BY_SUPPLIER_ID, 
     GET_SUPPLIERS, 
@@ -38,6 +39,14 @@ async function getSuppliers() {
  */
 async function getProducts() {
     return baseFetch(GET_ALL_PRODUCTS)
+}
+
+/**
+ * get all branches
+ * @returns @see baseFetch()
+ */
+ async function getBranches() {
+    return baseFetch(GET_BRANCHES)
 }
 
 /**
@@ -83,4 +92,4 @@ async function getProductsBySupplierId(id) {
     }
 }
 
-export {getUsers, getSuppliers, getProducts, getProductsBySupplierId, addOrder}
+export {getUsers, getSuppliers, getProducts, getBranches, getProductsBySupplierId, addOrder}

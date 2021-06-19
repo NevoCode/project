@@ -16,3 +16,7 @@ export const GET_ORDERS = BASE_API + 'orders/GetOrders';
 export const ADD_ORDER = BASE_API + 'orders/AddOrder';
 
 //Dashboard API
+
+//Branches API
+export const GET_BRANCHES = BASE_API + 'branches/GetBranches';
+
