@@ -7,7 +7,7 @@ import { addOrder } from '../../data/serviceApi';
 import { ShoppingCartContext } from '../../data/ShoppingCartContext';
 import ShoppingItem from '../products_list/ShoppingItem';
 
-const ShoppingCartScreen = ({route}) => {
+const ShoppingCartBranchScreen = ({route}) => {
     const shoppingCart = useContext(ShoppingCartContext);
     const [isOrderInProgress, setIsOrderInProgress] = useState(false)
 
@@ -83,7 +83,7 @@ const ShoppingCartScreen = ({route}) => {
     )
 }
 
-export default ShoppingCartScreen
+export default ShoppingCartBranchScreen
 
 
 const mockRequest = {

@@ -2,9 +2,15 @@ import React, {createContext, Component} from 'react';
 
 export const ShoppingCartContext = createContext();
 
+export const ORDER_TYPE = {
+  SUPPLIER: 1,
+  BRACH: 2
+}
+
 class ShoppingCartContextProvider extends Component {
   state = {
     list: [],
+    orderType: ORDER_TYPE.SUPPLIER
   };
 
   addProduct=(product)=>{

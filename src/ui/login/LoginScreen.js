@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import { Alert, StyleSheet, Button, View, Image, CheckBox } from 'react-native';
 import { loginWithEmailAndPassword } from '../../data/userValidator';
-import { HOME_TABS } from '../AppNavigation';
+import { HOME_TABS, WELCOME_SCREEN } from '../AppNavigation';
 
 export default LoginScreen = () => {
   const navigation = useNavigation()
@@ -20,8 +20,8 @@ export default LoginScreen = () => {
   const STORAGE_IS_USER_CONNECTED = "isConnected"
 
   //class states
-  const [email, setEmail] = useState("admin@gmail.com")
-  const [password, setPassword] = useState("123123")
+  const [email, setEmail] = useState("rb1@gmail.com")
+  const [password, setPassword] = useState("rbpass1")
   const [hidePassword, setHidePassword] = useState(true)
   const [isSelected, setIsSelected] = useState(false); 
   const [rememberMe, setRememberMe] = useState(true); 
@@ -80,13 +80,13 @@ export default LoginScreen = () => {
   };
 
   onLoginPressed = async () => {
-    const loginSuccess = await loginWithEmailAndPassword(email, password)
-    console.log("loginSuccess: " + loginSuccess);
-    if (loginSuccess) {
+    const user = await loginWithEmailAndPassword(email, password)
+    console.log("loginSuccess: " + JSON.stringify(user));
+    if (user && user.userName) {
       if (rememberMe){
         rememberUser()
       }
-      navigation.navigate(HOME_TABS, {name: email})
+      navigation.navigate(WELCOME_SCREEN, {name: user.userName, email: user.userEmail, branchId: user.userId})
     } else {
       createErrorAlert()
     }

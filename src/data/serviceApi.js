@@ -83,10 +83,10 @@ async function getProductsBySupplierId(id) {
     try {
         let response = await fetch(url, options);
         let responseJson = await response.json();
-        console.log("FETCH Success: " + JSON.stringify(responseJson))
+        // console.log("FETCH Success: " + JSON.stringify(responseJson))
         return responseJson;
     } catch (error) {
-        console.log("FETCH ERROR: " + error)
+        // console.log("FETCH ERROR: " + error)
         console.error(error);
         return error
     }
