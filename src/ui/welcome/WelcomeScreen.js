@@ -16,12 +16,13 @@ export default WelcomeScreen=({route})=>{
     // {selectedTab: screenName}
     const onItemClicked=(screenName)=>{
         route.params.selectedTab = screenName
+        console.log("WELCOME SCREEN ROUTE: " + JSON.stringify(route.params))
         navigation.navigate(HOME_TABS, {...route.params} )
     }
 
     return(
         <View style={styles.container}>
-            <Text style={styles.text}>שלום {route.params?.name}</Text>
+            <Text style={styles.text}>שלום {route.params?.managerName}</Text>
             <View style={styles.navigation}>
                 <TouchableOpacity onPress={()=> onItemClicked(SHOPPING_CART)}>
                     <View style={[styles.navigationItem, {borderColor: cartColor}]}>

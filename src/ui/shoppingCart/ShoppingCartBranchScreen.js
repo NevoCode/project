@@ -24,16 +24,12 @@ const ShoppingCartBranchScreen = ({route}) => {
         setIsOrderInProgress(true)
         //create request body
         const today = new Date().now()
-        const addOrderRequestModel = new AddOrderRequestModel(
-          orderId,
-          branchId = route.branchId,
-          branchName = route.name,
-          orderDate = today,
-          shippingDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7),
-          status,
-          totalPrice = shoppingCart.getTotalCartPrice(),
-          rawproductsinorder = shoppingCart.list
-        )
+
+        //TODO: AddBranchOrder
+        // const addBranchOrder = {
+        //   id: "",
+
+        // }
 
         //send api request
         const orderResponse = await addOrder(mockRequest)

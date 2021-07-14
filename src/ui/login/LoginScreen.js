@@ -13,6 +13,7 @@ import {
 import { Alert, StyleSheet, Button, View, Image, CheckBox } from 'react-native';
 import { loginWithEmailAndPassword } from '../../data/userValidator';
 import { HOME_TABS, WELCOME_SCREEN } from '../AppNavigation';
+import { getBranches } from '../../data/serviceApi';
 
 export default LoginScreen = () => {
   const navigation = useNavigation()
@@ -21,7 +22,7 @@ export default LoginScreen = () => {
 
   //class states
   const [email, setEmail] = useState("rb1@gmail.com")
-  const [password, setPassword] = useState("rbpass1")
+  const [password, setPassword] = useState("rbmanager1")
   const [hidePassword, setHidePassword] = useState(true)
   const [isSelected, setIsSelected] = useState(false); 
   const [rememberMe, setRememberMe] = useState(true); 
@@ -50,7 +51,7 @@ export default LoginScreen = () => {
       ]
     );
 
-  rememberUser = async () => {
+  const rememberUser = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_IS_USER_CONNECTED, this.state.username);
       console.log("XXXX -> remember " + this.state.username)
@@ -59,7 +60,7 @@ export default LoginScreen = () => {
     }
   };
 
-  getRememberedUser = async () => {
+  const getRememberedUser = async () => {
     try {
       const username = await AsyncStorage.getItem(STORAGE_IS_USER_CONNECTED);
       if (username !== null) {
@@ -71,7 +72,7 @@ export default LoginScreen = () => {
     }
   };
 
-  forgetUser = async () => {
+  const forgetUser = async () => {
     try {
       await AsyncStorage.removeItem(STORAGE_IS_USER_CONNECTED);
     } catch (error) {
@@ -79,17 +80,35 @@ export default LoginScreen = () => {
     }
   };
 
-  onLoginPressed = async () => {
-    const user = await loginWithEmailAndPassword(email, password)
-    console.log("loginSuccess: " + JSON.stringify(user));
-    if (user && user.userName) {
+  const onLoginPressed = async () => {
+    loginWithEmailAndPassword(email, password)
+    .then((user)=> {
+      console.log("loginSuccess: " + JSON.stringify(user));
       if (rememberMe){
         rememberUser()
       }
-      navigation.navigate(WELCOME_SCREEN, {name: user.userName, email: user.userEmail, branchId: user.userId})
-    } else {
+
+      getBranches()
+      .then((branchesResponse)=> {
+       for (const index in branchesResponse){
+          const {branchName, managerName, userId, badge, branchId} = branchesResponse[index]
+            if (userId === user.userId){
+              navigation.navigate(WELCOME_SCREEN, {
+                name: branchName, 
+                budget: badge, 
+                managerName: managerName, 
+                email: user.userEmail, 
+                branchId: branchId})
+            }
+        }
+      })
+      .catch((error)=> console.log("getBranches Error: " + error))
+
+    })
+    .catch((error)=> {
+      console.log("login error: " + error);
       createErrorAlert()
-    }
+    })
   }
 
   return (
@@ -98,11 +117,11 @@ export default LoginScreen = () => {
       <Form>
         <FormItem floatingLabel style={styles.FormItem}>
           <Label style={styles.label}>אימייל</Label>
-          <Input style={styles.input} onChangeText={setEmail} />
+          <Input style={styles.input} onChangeText={setEmail} value={email}/>
         </FormItem>
         <FormItem floatingLabel style={styles.FormItem} last>
           <Label style={styles.label}>סיסמה</Label>
-          <Input style={styles.input} onChangeText={setPassword} secureTextEntry={hidePassword} />
+          <Input style={styles.input} onChangeText={setPassword} secureTextEntry={hidePassword} value={password}/>
           <Icon name={'eye'} onPress={() => setHidePassword(!hidePassword)} style={styles.eyeIcon} />
 
         </FormItem>

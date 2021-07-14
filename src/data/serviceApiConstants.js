@@ -13,10 +13,18 @@ export const GET_PRODUCTS_BY_SUPPLIER_ID=(id)=> BASE_API + 'rawproducts/GetRawPr
 
 //Orders API
 export const GET_ORDERS = BASE_API + 'orders/GetOrders';
-export const ADD_ORDER = BASE_API + 'orders/AddOrder';
+export const ADD_ORDER_SUPPLIER = BASE_API + 'orders/AddOrder';
+export const GET_BRANCH_ORDERS=(id)=> BASE_API + 'orders/GetOrdersByBranch/' + id;
+
 
 //Dashboard API
+export const GET_PRODUCTS_RECOMENDED_AMOUNT=(branchId)=> BASE_API + 'SmartAlgo/GetSmartAlgo/' + branchId;
+
 
 //Branches API
 export const GET_BRANCHES = BASE_API + 'branches/GetBranches';
+export const GET_BRANCH_BY_USER_ID=(id)=> BASE_API + 'branches/GetBranch/' + id;
+
+//Transfers
+export const ADD_TRANSFER=(fromBranch, toBranch) => BASE_API + 'transfers/AddTransfer/' + fromBranch + '/' + toBranch;
 

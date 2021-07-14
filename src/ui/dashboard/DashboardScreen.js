@@ -9,7 +9,7 @@ import {
     ContributionGraph
   } from 'react-native-chart-kit'
 
-const DashboardScreen= ()=> {
+const DashboardScreen= ({route})=> {
 
     useEffect(()=> {
         // Fetch data from server
@@ -21,14 +21,14 @@ const DashboardScreen= ()=> {
 
     const pieSections = [
         {
-            name: "תקציב",
+          name: "תקציב",
           label: "סך כל התקציב",
           percentage: 30,
           color: '#44CD40',
-            legendFontColor: '#7F7F7F', legendFontSize: 18
+          legendFontColor: '#7F7F7F', legendFontSize: 18
         },
         {
-            name: "הכנסות",
+          name: "הכנסות",
           label: "סך הכל הכנסות אחרי תקציב",
           percentage: 70,
           color: '#404FCD',
@@ -70,7 +70,7 @@ const DashboardScreen= ()=> {
             </View>
             <View style={{alignItems: 'center'}}>
                 <Text style={styles.footer}>יתרת התקציב</Text>
-                <Text style={{fontSize: 25}}>22,000₪</Text>
+                <Text style={{fontSize: 25}}>₪{route.params.budget}</Text>
             </View>
         </View>
     );

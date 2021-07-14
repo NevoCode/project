@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './home/HomeScreen';
+import HomeScreenBranch from './home/HomeScreenBranch';
 import LoginScreen from './login/LoginScreen';
 import ShoppingCartScreen from './shoppingCart/ShoppingCartScreen';
 import DashboardScreen from './dashboard/DashboardScreen';
@@ -24,7 +25,7 @@ const SHOPPING_CART = "עגלת ספקים"
 const SHOPPING_CART_BRANCH = "עגלת סניפים"
 
 const DASHBOARD = "תקציבים"
-const WELCOME_SCREEN = "שלום התחברת"
+const WELCOME_SCREEN = "שלום"
 
 const HOME_TABS = "tabs"  //TODO: pass user name
 
@@ -41,8 +42,6 @@ const AppNavigation = () => {
   // const userName = AsyncStorage.getItem("userName", "")
   const [isConnected, setIsConnected] = useState(false)
 
-  let selectedTab
-
   return (
     <NavigationContainer>
         <Stack.Navigator>
@@ -50,23 +49,20 @@ const AppNavigation = () => {
           <Stack.Screen name={ONBOARDING_TWO} component={ObboardingTwo} options={{headerShown: false}}/>
           <Stack.Screen name={ONBOARDING_THREE} component={ObboardingThree} options={{headerShown: false}}/>
           <Stack.Screen name={LOGIN_SCREEN} component={LoginScreen}/>
-          <Stack.Screen name={WELCOME_SCREEN} component={WelcomeScreen} />
-          <Stack.Screen name={HOME_TABS} component={HomeTabs} options={({ route }) => {
-            ({ title: 'שלום ' + route.params?.name})
-          } 
-          }
-          />
+          <Stack.Screen name={WELCOME_SCREEN} component={WelcomeScreen} options={({route})=> {
+            return { headerTitle: route.params?.name, headerShown: true}}}/>
+          <Stack.Screen name={HOME_TABS} component={({route})=> HomeTabs({params: route.params, selectedTab: route.params.selectedTab})} options={({route})=> {
+            return { headerTitle: route.params?.name}}}/>
         </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const HomeTabs = () => {
-
+const HomeTabs = ({params, selectedTab}) => {
   return (
-    <ShoppingCartContextProvider>
+    <ShoppingCartContextProvider data={{branchId: params.branchId}}>
       <Tabs.Navigator
-      // initialRouteName={route.params?.selectedTab}
+      initialRouteName={selectedTab}
       screenOptions={({route, navigation})=> {
         return ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -97,11 +93,11 @@ const HomeTabs = () => {
         inactiveTintColor: 'gray',
       }}
     >
-        <Tabs.Screen name={HOME_SCREEN} component={HomeScreen} />
-        <Tabs.Screen name={HOME_SCREEN_BRANCH} component={HomeScreen} />
-        <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} />
-        <Tabs.Screen name={SHOPPING_CART_BRANCH} component={ShoppingCartScreen} />
-        <Tabs.Screen name={DASHBOARD} component={DashboardScreen} />
+        <Tabs.Screen name={HOME_SCREEN} component={HomeScreen} initialParams={{...params}}/>
+        <Tabs.Screen name={HOME_SCREEN_BRANCH} component={HomeScreenBranch} initialParams={{...params}}/>
+        <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} initialParams={{...params}}/>
+        <Tabs.Screen name={SHOPPING_CART_BRANCH} component={ShoppingCartScreen} initialParams={{...params}}/>
+        <Tabs.Screen name={DASHBOARD} component={DashboardScreen} initialParams={{...params}}/>
       </Tabs.Navigator>
     </ShoppingCartContextProvider>
   )

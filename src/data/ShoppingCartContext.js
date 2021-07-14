@@ -1,4 +1,6 @@
 import React, {createContext, Component} from 'react';
+import { Alert } from 'react-native';
+import { getProductsSmartAlgo } from './serviceApi';
 
 export const ShoppingCartContext = createContext();
 
@@ -8,10 +10,32 @@ export const ORDER_TYPE = {
 }
 
 class ShoppingCartContextProvider extends Component {
+  branchId = 0
+
+  constructor(props){
+    super(props)
+    this.branchId = props.data.branchId
+    this.refreshSmartAlgo()
+  }
+  
   state = {
     list: [],
-    orderType: ORDER_TYPE.SUPPLIER
+    branchList: [],
+    orderType: ORDER_TYPE.SUPPLIER,
+    smartAlgoList: []
   };
+
+  refreshSmartAlgo=(force = false)=>{
+    if (this.state.smartAlgoList.length == 0 && !force){
+      getProductsSmartAlgo(this.branchId).then((list)=>{
+        try {
+          this.state.smartAlgoList = [...list]
+        } catch(error){
+          Alert.alert("Error fetching smartAlgo\n" + list )
+        }
+      })
+    }
+  }
 
   addProduct=(product)=>{
     console.log("addProduct: " + product)
@@ -60,6 +84,11 @@ class ShoppingCartContextProvider extends Component {
     return amount
   }
 
+  clearShoppingCart=()=> {
+    this.setState({list: []})
+    this.refreshSmartAlgo(true)
+  }
+
   isShoppingCartEmpty=()=> this.state.list.length == 0
 
   render() {
@@ -73,6 +102,7 @@ class ShoppingCartContextProvider extends Component {
           isProductExists: this.isProductExists,
           getTotalCartPrice: this.getTotalCartPrice,
           isShoppingCartEmpty: this.isShoppingCartEmpty,
+          clearShoppingCart: this.clearShoppingCart,
         }}>
         {this.props.children}
       </ShoppingCartContext.Provider>

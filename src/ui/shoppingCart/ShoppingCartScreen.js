@@ -1,17 +1,17 @@
 import { Container, Left, Button, Spinner } from 'native-base';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {View, Text, Alert} from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { AddOrderRequestModel } from '../../data/addOrderRequestModel';
 import { addOrder } from '../../data/serviceApi';
-import { ShoppingCartContext } from '../../data/ShoppingCartContext';
+import { ShoppingCartContext, clearShoppingCart } from '../../data/ShoppingCartContext';
 import ShoppingItem from '../products_list/ShoppingItem';
 
 const ShoppingCartScreen = ({route}) => {
     const shoppingCart = useContext(ShoppingCartContext);
     const [isOrderInProgress, setIsOrderInProgress] = useState(false)
 
-    onQuantityChanged = (index ,quantity) => {
+    onQuantityChanged=(index ,quantity) => {
         if (quantity === 0){
             shoppingCart.removeProduct(index)
         } else {
@@ -19,33 +19,46 @@ const ShoppingCartScreen = ({route}) => {
         }
     }
 
+    const getProductRecommended=(productId)=>{
+      const productsSmartAlgo = shoppingCart.smartAlgoList
+      for (var index in productsSmartAlgo){
+        const productAlgo = productsSmartAlgo[index]
+        if (productAlgo.Material === productId){
+          return productAlgo.RecommendedQuant
+        }
+      }
+      return "unknown"
+    }
+
     onBuyButtonClicked=async()=>{
+      console.log("PARAMS : " + JSON.stringify(route))
         //show loading
         setIsOrderInProgress(true)
         //create request body
-        const today = new Date().now()
+        const today = new Date()
+        const shipping = new Date(today.getDate()+7)
+        //  console.log("XXX2 -> " + JSON.stringify(shoppingCart.list[0]))
+
         const addOrderRequestModel = new AddOrderRequestModel(
-          orderId,
-          branchId = route.branchId,
-          branchName = route.name,
-          orderDate = today,
-          shippingDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7),
-          status,
-          totalPrice = shoppingCart.getTotalCartPrice(),
-          rawproductsinorder = shoppingCart.list
+          /*orderId*/ 1,
+          /*branchId*/ route.params.branchId,  
+          /*branchName*/ route.params.name,
+          /*orderDate*/ today,
+          /*shippingDate*/ shipping,
+          /*status*/ "new",
+          /*totalPrice*/ shoppingCart.getTotalCartPrice(),
+          /*rawproductsinorder*/ [...shoppingCart.list]
         )
 
         //send api request
-        const orderResponse = await addOrder(mockRequest)
-        console.log("XXX -> " + JSON.stringify(orderResponse))
-
+        const orderResponse = await addOrder(addOrderRequestModel)
           if (typeof orderResponse == "string"){
             createOrderResponseAlert(orderResponse)
+            shoppingCart.clearShoppingCart()
           } else {
-            const {_errorMessage, _propertyName} = orderResponse.EntityValidationErrors[0]._validationErrors[0]
-            createOrderResponseAlert(_propertyName + '\n' + _errorMessage)
+            const {Message} = orderResponse
+            createOrderResponseAlert(Message)
           }
-
         setIsOrderInProgress(false)
     }
 
@@ -63,7 +76,13 @@ const ShoppingCartScreen = ({route}) => {
             <ProductsList
                 style={{height: '90%'}}
                 data={shoppingCart.list}
-                renderItem={({item, index})=> <ShoppingItem index={index} item={item} onQuantityChanged={onQuantityChanged}/>}
+                renderItem={({item, index})=> {
+                  item.recommendedAmout = getProductRecommended(item.rawproductId).toString().split(".")[0]
+                  return <ShoppingItem index={index} 
+                      item={item} 
+                      onQuantityChanged={onQuantityChanged} />
+                  }
+                    }
             />
             <View style={{
                 backgroundColor: Colors.white, 
