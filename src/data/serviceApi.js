@@ -17,8 +17,13 @@ import {
  * Add trannsfer between branches
  * @returns @see baseFetch()
  */
-const addTransferBetweenBranches = async (fromBranch, toBranch) => {
-    return baseFetch(ADD_TRANSFER(fromBranch, toBranch))
+const addTransferBetweenBranches = async (fromBranch, toBranch, request) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request)
+    };
+    return baseFetch(ADD_TRANSFER(fromBranch, toBranch), requestOptions)
 }
 
 /**
