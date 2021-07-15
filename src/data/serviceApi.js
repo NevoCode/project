@@ -9,7 +9,8 @@ import {
     GET_USERS,
     GET_PRODUCTS_RECOMENDED_AMOUNT,
     GET_BRANCH_BY_USER_ID,
-    ADD_TRANSFER
+    ADD_TRANSFER,
+    GET_ALL_TRANSFERS
 } from "./serviceApiConstants";
 
 
@@ -24,6 +25,14 @@ const addTransferBetweenBranches = async (fromBranch, toBranch, request) => {
         body: JSON.stringify(request)
     };
     return baseFetch(ADD_TRANSFER(fromBranch, toBranch), requestOptions)
+}
+
+/**
+ * Get Branches Transfers
+ * @returns @see baseFetch()
+ */
+ const getAllTransfers = () => {
+    return baseFetch(GET_ALL_TRANSFERS)
 }
 
 /**
@@ -132,5 +141,6 @@ export {
     addOrder,
     getProductsSmartAlgo,
     getBrancheByUserId,
-    addTransferBetweenBranches
+    addTransferBetweenBranches,
+    getAllTransfers
 }

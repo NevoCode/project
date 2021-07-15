@@ -15,6 +15,7 @@ import { Alert } from 'react-native';
 import ObboardingOne from './onboarding/OnboardingOne';
 import ObboardingTwo from './onboarding/OnboardingTwo';
 import ObboardingThree from './onboarding/OnboardingThree';
+import TransfersScreen from './transfers/TransfersScreen';
 
 
 const LOGIN_SCREEN = "Login"
@@ -33,6 +34,7 @@ const ONBOARDING_ONE = "קניות"
 const ONBOARDING_TWO = "הזמנות"
 const ONBOARDING_THREE = "תקציבים"
 
+const TRANSFERS_SCREEN = "העברות"
 
 const Tabs = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -98,6 +100,8 @@ const HomeTabs = ({params, selectedTab}) => {
         <Tabs.Screen name={SHOPPING_CART} component={ShoppingCartScreen} initialParams={{...params}}/>
         <Tabs.Screen name={SHOPPING_CART_BRANCH} component={ShoppingCartScreen} initialParams={{...params}}/>
         <Tabs.Screen name={DASHBOARD} component={DashboardScreen} initialParams={{...params}}/>
+        <Tabs.Screen name={TRANSFERS_SCREEN} component={TransfersScreen} initialParams={{...params}}/>
+        
       </Tabs.Navigator>
     </ShoppingCartContextProvider>
   )

@@ -34,21 +34,17 @@ const ShoppingCartScreen = ({route}) => {
       console.log("PARAMS : " + JSON.stringify(route))
         //show loading
         setIsOrderInProgress(true)
-        //create request body
-        const today = new Date()
-        const shipping = new Date(today.getDate()+7)
-        //  console.log("XXX2 -> " + JSON.stringify(shoppingCart.list[0]))
 
-        const addOrderRequestModel = new AddOrderRequestModel(
-          /*orderId*/ 1,
-          /*branchId*/ route.params.branchId,  
-          /*branchName*/ route.params.name,
-          /*orderDate*/ today,
-          /*shippingDate*/ shipping,
-          /*status*/ "new",
-          /*totalPrice*/ shoppingCart.getTotalCartPrice(),
-          /*rawproductsinorder*/ [...shoppingCart.list]
-        )
+        const today = new Date()
+        const shipping = new Date()
+        shipping.setDate(today.getDate() + 7)
+
+        //create request body
+        const addOrderRequestModel = new AddOrderRequestModel()
+        addOrderRequestModel.branchId = route.params.branchId
+        addOrderRequestModel.orderDate = today.toISOString()
+        addOrderRequestModel.shippingDate = shipping.toISOString()
+        addOrderRequestModel.rawproductsinorders = [...shoppingCart.list]
 
         //send api request
         const orderResponse = await addOrder(addOrderRequestModel)
@@ -58,6 +54,7 @@ const ShoppingCartScreen = ({route}) => {
           } else {
             const {Message} = orderResponse
             createOrderResponseAlert(Message)
+            console.log("orderResponse Error: " + JSON.stringify(orderResponse))
           }
         setIsOrderInProgress(false)
     }

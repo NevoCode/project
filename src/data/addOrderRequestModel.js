@@ -1,21 +1,24 @@
 class AddOrderRequestModel {
     constructor(        
-        orderId,
+        orderId = 0,
         branchId,
-        branchName,
         orderDate,
         shippingDate,
-        status,
-        totalPrice,
-        rawproductsinorder){
+        status = "",
+        branch = {},
+        conversations = [],
+        rawproductsinorders = [],
+        rawproductsintransfers = []	
+){
             this.orderId = orderId,
             this.branchId = branchId,
-            this.branchName = branchName,
             this.orderDate = orderDate,
             this.shippingDate = shippingDate,
+            this.branch = branch,
             this.status = status,
-            this.totalPrice = totalPrice,
-            this.rawproductsinorder = rawproductsinorder
+            this.conversations = conversations,
+            this.rawproductsinorders = rawproductsinorders,
+            this.rawproductsintransfers = rawproductsintransfers
         }
 }
 
