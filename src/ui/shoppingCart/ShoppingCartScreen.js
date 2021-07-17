@@ -45,6 +45,9 @@ const ShoppingCartScreen = ({route}) => {
         addOrderRequestModel.orderDate = today.toISOString()
         addOrderRequestModel.shippingDate = shipping.toISOString()
         addOrderRequestModel.rawproductsinorders = [...shoppingCart.list]
+        for (let product of addOrderRequestModel.rawproductsinorders){
+          product.orderAmount = product.quantity
+        }
 
         //send api request
         const orderResponse = await addOrder(addOrderRequestModel)

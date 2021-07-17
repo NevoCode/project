@@ -10,8 +10,23 @@ import {
     GET_PRODUCTS_RECOMENDED_AMOUNT,
     GET_BRANCH_BY_USER_ID,
     ADD_TRANSFER,
-    GET_ALL_TRANSFERS
+    GET_ALL_TRANSFERS,
+    EDIT_TRANSFER
 } from "./serviceApiConstants";
+
+
+/**
+ * Edit trannsfer between branches
+ * @returns @see baseFetch()
+ */
+ const editTransferBetweenBranches = async (transferId, request) => {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request)
+    };
+    return baseFetch(EDIT_TRANSFER(transferId), requestOptions)
+}
 
 
 /**
@@ -121,7 +136,7 @@ async function addOrder(request) {
  * @returns Error String 
  */
 async function baseFetch(url, options = "") {
-    console.log("FETCH URL :" + url)
+    // console.log("FETCH URL :" + url)
     try {
         let response = await fetch(url, options);
         let responseJson = await response.json();
@@ -142,5 +157,6 @@ export {
     getProductsSmartAlgo,
     getBrancheByUserId,
     addTransferBetweenBranches,
-    getAllTransfers
+    getAllTransfers,
+    editTransferBetweenBranches
 }

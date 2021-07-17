@@ -27,5 +27,6 @@ export const GET_BRANCH_BY_USER_ID=(id)=> BASE_API + 'branches/GetBranch/' + id;
 
 //Transfers
 export const ADD_TRANSFER=(fromBranch, toBranch) => BASE_API + 'transfers/AddTransfer/' + fromBranch + '/' + toBranch;
+export const EDIT_TRANSFER=(transferId) => BASE_API + 'transfers/EditTransfer/' + transferId;
 export const GET_ALL_TRANSFERS = BASE_API + 'transfers/GetAllTransfers';
 
